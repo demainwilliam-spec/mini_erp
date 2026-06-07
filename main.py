@@ -1,4 +1,5 @@
-from database.db import engine, init_db
+from database.db import init_db
+from models.author import Author
 
 init_db()
-print("Connexion réussie !")
+print("Tables créées !")

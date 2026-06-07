@@ -1,0 +1,28 @@
+ Branche feat/models — les entités
+On va créer les tables dans cet ordre, du plus simple au plus complexe :
+
+models/author.py — Author
+models/supplier.py — Supplier
+models/category.py — Category + table book_category
+models/book.py — Book (relie tout)
+models/customer.py — Customer
+models/order.py — Order + OrderLine
+
+
+🌿 Branche feat/services — logique utilitaire
+
+services/stock_service.py — vérifier et décrémenter le stock
+services/order_service.py — confirmer et clôturer une commande
+
+
+🌿 Branche feat/controllers — logique métier
+
+controllers/catalog_controller.py — Author, Supplier, Category
+controllers/book_controller.py — Book
+controllers/customer_controller.py — Customer
+controllers/order_controller.py — Order + OrderLine
+
+
+🌿 Branche feat/main — scénario de test
+
+main.py — on teste tout le flux de bout en bout
