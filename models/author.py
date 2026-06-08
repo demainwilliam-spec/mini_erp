@@ -6,7 +6,7 @@ from database.db import Base
 class Author(Base):
     __tablename__ = "authors"
 
-    id:   Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(150), nullable=False)
 
     books: Mapped[list["Book"]] = relationship("Book", back_populates="author")
