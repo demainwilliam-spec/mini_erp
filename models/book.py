@@ -1,5 +1,5 @@
 from decimal import Decimal
-from sqlalchemy import String, Numeric, Integer, ForeignKey
+from sqlalchemy import String, Numeric, Integer, ForeignKey, Identity
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db import Base
 from models.category import book_category
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 class Book(Base):
     __tablename__ = "books"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
     stock_quantity: Mapped[int] = mapped_column(Integer, default=0, nullable=False)

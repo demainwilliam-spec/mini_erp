@@ -1,11 +1,11 @@
-from sqlalchemy import String
+from sqlalchemy import String, Identity
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db import Base
 
 class Customer(Base):
     __tablename__ = "customers"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     name: Mapped[str] = mapped_column(String(150), nullable=False)
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
 

@@ -1,14 +1,14 @@
 from __future__ import annotations
 from datetime import date
 from decimal import Decimal
-from sqlalchemy import Date, String, ForeignKey, Numeric, Integer
+from sqlalchemy import Date, String, ForeignKey, Numeric, Integer, Identity
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db import Base
 
 class Order(Base):
     __tablename__ = "orders"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     date: Mapped[date] = mapped_column(Date, default=date.today, nullable=False)
     status: Mapped[str] = mapped_column(String(20), default="draft", nullable=False)
     customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
@@ -30,7 +30,7 @@ class Order(Base):
 class OrderLine(Base):
     __tablename__ = "order_lines"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
     book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)

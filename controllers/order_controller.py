@@ -66,10 +66,6 @@ class OrderController:
         stmt = select(Order).where(Order.customer_id == customer_id)
         return session.execute(stmt).scalars().all()
     
-    def to_decimal(value) -> Decimal:
-        return Decimal(str(value)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-    
-    
     @staticmethod
     def summary(order: Order) -> dict:
     
