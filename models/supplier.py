@@ -1,6 +1,9 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db import Base
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from models.book import Book
 
 class Supplier(Base):
     __tablename__ = "suppliers"

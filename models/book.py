@@ -3,6 +3,11 @@ from sqlalchemy import String, Numeric, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db import Base
 from models.category import book_category
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from models.author import Author
+    from models.supplier import Supplier
+    from models.category import Category
 
 
 class Book(Base):

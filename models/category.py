@@ -1,6 +1,9 @@
 from sqlalchemy import String, Table, Column, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db import Base
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from models.book import Book    
 
 book_category = Table(
     "book_category",

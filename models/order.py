@@ -8,12 +8,12 @@ from database.db import Base
 class Order(Base):
     __tablename__ = "orders"
 
-    id:          Mapped[int]  = mapped_column(primary_key=True)
-    date:        Mapped[date] = mapped_column(Date, default=date.today, nullable=False)
-    status:      Mapped[str]  = mapped_column(String(20), default="draft", nullable=False)
-    customer_id: Mapped[int]  = mapped_column(ForeignKey("customers.id"))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    date: Mapped[date] = mapped_column(Date, default=date.today, nullable=False)
+    status: Mapped[str] = mapped_column(String(20), default="draft", nullable=False)
+    customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
 
-    customer:    Mapped["Customer"]        = relationship("Customer", back_populates="orders")
+    customer: Mapped["Customer"] = relationship("Customer", back_populates="orders")
     order_lines: Mapped[list["OrderLine"]] = relationship(
         "OrderLine", back_populates="order", cascade="all, delete-orphan"
     )
@@ -30,14 +30,14 @@ class Order(Base):
 class OrderLine(Base):
     __tablename__ = "order_lines"
 
-    id:         Mapped[int]     = mapped_column(primary_key=True)
-    order_id:   Mapped[int]     = mapped_column(ForeignKey("orders.id"))
-    book_id:    Mapped[int]     = mapped_column(ForeignKey("books.id"))
-    quantity:   Mapped[int]     = mapped_column(Integer, nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
+    book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False)
     unit_price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
 
     order: Mapped["Order"] = relationship("Order", back_populates="order_lines")
-    book:  Mapped["Book"]  = relationship("Book")
+    book: Mapped["Book"] = relationship("Book")
 
     def __repr__(self) -> str:
         return (
