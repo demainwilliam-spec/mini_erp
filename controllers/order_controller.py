@@ -43,16 +43,19 @@ class OrderController:
             unit_price=book.price,
         )
         session.add(line)
+        session.flush()
         return line
     
 
     @staticmethod
     def confirm(session: Session, order: Order) -> None:
         confirm_order(session, order)
+        session.flush()
     
     @staticmethod
     def close(session: Session, order: Order) -> None:
         close_order(session, order)
+        session.flush()
 
     @staticmethod
     def get(session: Session, order_id: int) -> Order:
