@@ -1,7 +1,7 @@
 from datetime import date
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from models.order import Order, OrderLine
+from models.order import Order, OrderLine, OrderStatus
 from models.book import Book
 from models.customer import Customer
 from services.order_service import confirm_order, close_order
@@ -18,7 +18,7 @@ class OrderController:
         customer = session.get(Customer, customer_id)
         if not customer:
             raise ValueError(f"Client introuvable : id={customer_id}")
-        order = Order(date=date.today(), status="draft", customer_id=customer_id)
+        order = Order(date=date.today(), status=OrderStatus.DRAFT, customer_id=customer_id)
         session.add(order)
         session.flush()
         return order
@@ -31,7 +31,7 @@ class OrderController:
         book_id: int,
         quantity: int,
     ) -> OrderLine:
-        if order.status != "draft":
+        if order.status != OrderStatus.DRAFT:
             raise ValueError("Impossible de modifier une commande non-draft.")
         book = session.get(Book, book_id)
         if not book:
@@ -76,7 +76,7 @@ class OrderController:
             "order_id": order.id,
             "customer_name": order.customer.name,
             "date": str(order.date),
-            "status": order.status,
+            "status": order.status.value,
             "total_amount": to_decimal(order.total),
             "lines": [
                 {

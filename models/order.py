@@ -4,13 +4,20 @@ from decimal import Decimal
 from sqlalchemy import Date, String, ForeignKey, Numeric, Integer, Identity
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database.db import Base
+import enum
+import sqlalchemy as sa
+
+class OrderStatus(enum.Enum):
+    DRAFT = "draft"
+    CONFIRMED = "confirmed"
+    CLOSED = "closed"
 
 class Order(Base):
     __tablename__ = "orders"
 
     id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     date: Mapped[date] = mapped_column(Date, default=date.today, nullable=False)
-    status: Mapped[str] = mapped_column(String(20), default="draft", nullable=False)
+    status: Mapped[OrderStatus] = mapped_column(sa.Enum(OrderStatus), default=OrderStatus.DRAFT, nullable=False)
     customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
 
     customer: Mapped["Customer"] = relationship("Customer", back_populates="orders")

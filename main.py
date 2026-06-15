@@ -23,7 +23,7 @@ def main():
 
         # ── Créer une commande ────────────────────────────────
         order = OrderController.create_draft(session, customer_id=alice.id)
-        print(f"\n📋 Commande créée — statut : {order.status}")
+        print(f"\n📋 Commande créée — statut : {order.status.value}")
 
         # ── Ajouter des lignes ────────────────────────────────
         OrderController.add_line(session, order, book_id=book1.id, quantity=2)
@@ -33,13 +33,13 @@ def main():
         # ── Confirmer la commande ─────────────────────────────
         OrderController.confirm(session, order)
         session.flush()
-        print(f"\n✅ Commande confirmée — statut : {order.status}")
+        print(f"\n✅ Commande confirmée — statut : {order.status.value}")
         print(f"📦 Stock {book1.title} après confirmation : {book1.stock_quantity}")
         print(f"📦 Stock {book2.title} après confirmation : {book2.stock_quantity}")
 
         # ── Clôturer la commande ──────────────────────────────
         OrderController.close(session, order)
-        print(f"\n🏁 Commande clôturée — statut : {order.status}")
+        print(f"\n🏁 Commande clôturée — statut : {order.status.value}")
 
         # ── Afficher le résumé ────────────────────────────────
         print(f"\n📊 Résumé de la commande :")

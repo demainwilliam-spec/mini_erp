@@ -1,6 +1,6 @@
 from decimal import Decimal
 from sqlalchemy.orm import Session
-from models.order import Order
+from models.order import Order, OrderStatus
 from services.stock_service import check_stock, decrement_stock
 
 
@@ -9,7 +9,7 @@ def compute_order_total(order: Order) -> Decimal:
 
 
 def confirm_order(session: Session, order: Order) -> None:
-    if order.status != "draft":
+    if order.status != OrderStatus.DRAFT:
         raise ValueError(f"Seules les commandes 'draft' peuvent être confirmées (statut actuel: {order.status!r}).")
 
     for line in order.order_lines:
@@ -18,10 +18,10 @@ def confirm_order(session: Session, order: Order) -> None:
     for line in order.order_lines:
         decrement_stock(session, line.book_id, line.quantity)
 
-    order.status = "confirmed"
+    order.status = OrderStatus.CONFIRMED
 
 def close_order(session: Session, order: Order) -> None:
-    if order.status != "confirmed":
+    if order.status != OrderStatus.CONFIRMED:
         raise ValueError(f"Seules les commandes 'confirmed' peuvent être clôturées (statut actuel: {order.status!r}).")
 
-    order.status = "closed"
+    order.status = OrderStatus.CLOSED
