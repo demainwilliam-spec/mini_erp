@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from models.book import Book
+from models.stock_movement import StockMovement, MovementReason
 
 
 class StockError(Exception):
@@ -20,6 +21,7 @@ def check_stock(session: Session, book_id: int, qty: int) -> Book:
 
 def decrement_stock(session: Session, book_id: int, qty: int) -> None:
     book = check_stock(session, book_id, qty)
+    session.add(StockMovement(book_id=book_id, quantity=-qty, reason=MovementReason.ORDER_CONFIRMED))
     book.stock_quantity -= qty
 
 
@@ -32,5 +34,5 @@ def restock(session: Session, book_id: int, qty: int) -> Book:
     if book is None:
         raise ValueError(f"Livre introuvable : id={book_id}")
     book.stock_quantity += qty
-   
+    session.add(StockMovement(book_id=book_id, quantity=qty, reason=MovementReason.RESTOCK))
     return book

@@ -17,7 +17,7 @@ class Order(Base):
 
     id: Mapped[int] = mapped_column(Identity(always=True), primary_key=True)
     date: Mapped[date] = mapped_column(Date, default=date.today, nullable=False)
-    status: Mapped[OrderStatus] = mapped_column(sa.Enum(OrderStatus), default=OrderStatus.DRAFT, nullable=False)
+    status: Mapped[OrderStatus] = mapped_column(sa.Enum(OrderStatus, values_callable=lambda x: [e.value for e in x]), default=OrderStatus.DRAFT, nullable=False)
     customer_id: Mapped[int] = mapped_column(ForeignKey("customers.id"))
 
     customer: Mapped["Customer"] = relationship("Customer", back_populates="orders")

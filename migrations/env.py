@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from database.db import Base
-from models import author, supplier, category, book, customer, order
+from models import author, supplier, category, book, customer, order, stock_movement
 from dotenv import load_dotenv
 import os
 
