@@ -10,8 +10,7 @@ app = FastAPI(
 )
 
 app.include_router(authors.router)
-# À décommenter au fur et à mesure
-# app.include_router(suppliers.router)
+app.include_router(suppliers.router)
 # app.include_router(categories.router)
 # app.include_router(books.router)
 # app.include_router(customers.router)
