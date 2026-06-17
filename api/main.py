@@ -11,8 +11,8 @@ app = FastAPI(
 
 app.include_router(authors.router)
 app.include_router(suppliers.router)
-# app.include_router(categories.router)
-# app.include_router(books.router)
+app.include_router(categories.router)
+app.include_router(books.router)
 # app.include_router(customers.router)
 # app.include_router(orders.router)
 # app.include_router(stock_movements.router)
