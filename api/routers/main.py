@@ -15,7 +15,7 @@ app.include_router(categories.router)
 app.include_router(books.router)
 app.include_router(customers.router)
 app.include_router(orders.router)
-app.include_router(stock_movements.router)
+# app.include_router(stock_movements.router)
 @app.get("/")
 def root():
     return {"message": "Bienvenue sur le Mini ERP API !"}
