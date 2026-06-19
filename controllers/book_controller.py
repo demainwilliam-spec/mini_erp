@@ -1,8 +1,8 @@
 from decimal import Decimal
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 from models.book import Book
-from models.category import Category
+from repositories.book_repository import BookRepository
+from repositories.category_repository import CategoryRepository
 
 
 class BookController:
@@ -25,28 +25,20 @@ class BookController:
             supplier_id=supplier_id,
         )
         if category_ids:
-            stmt = select(Category).where(Category.id.in_(category_ids))
-            cats = session.execute(stmt).scalars().all()
-            book.categories = cats
-        session.add(book)
-        session.flush()
-        return book
-    
+            book.categories = CategoryRepository.get_by_ids(session, category_ids)
+        return BookRepository.add(session, book)
+
     @staticmethod
-    def get(session: Session, book_id: int) -> Book:
-        book = session.get(Book, book_id)
-        if not book:
-            raise ValueError(f"Livre introuvable : id={book_id}")
-        return book
+    def get(session: Session, book_id: int) -> Book | None:
+        return BookRepository.get_by_id(session, book_id)
 
     @staticmethod
     def list_all(session: Session) -> list[Book]:
-        stmt = select(Book)
-        return session.execute(stmt).scalars().all()
-    
+        return BookRepository.get_all(session)
+
     @staticmethod
     def update_price(session: Session, book_id: int, new_price: Decimal) -> Book:
-        book = session.get(Book, book_id)
+        book = BookRepository.get_by_id(session, book_id)
         if not book:
             raise ValueError(f"Livre introuvable : id={book_id}")
         book.price = new_price
@@ -54,7 +46,7 @@ class BookController:
 
     @staticmethod
     def delete(session: Session, book_id: int) -> None:
-        book = session.get(Book, book_id)
+        book = BookRepository.get_by_id(session, book_id)
         if not book:
             raise ValueError(f"Livre introuvable : id={book_id}")
-        session.delete(book)
+        BookRepository.delete(session, book)

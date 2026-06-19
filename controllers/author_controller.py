@@ -1,34 +1,28 @@
 from sqlalchemy.orm import Session
 from models.author import Author
-from sqlalchemy import select
+from repositories.author_repository import AuthorRepository
 
 class AuthorController:
 
     @staticmethod
     def create(session: Session, name: str) -> Author:
         author = Author(name=name)
-        session.add(author)
-        session.flush()
-        return author
+        return AuthorRepository.add(session, author)
     
 
     @staticmethod
-    def get(session: Session, author_id: int) -> Author:
-        author = session.get(Author, author_id)
-        if not author:
-            raise ValueError(f"Auteur introuvable : id={author_id}")
-        return author
+    def get(session: Session, author_id: int) -> Author | None:
+        return AuthorRepository.get_by_id(session, author_id)
 
 
     @staticmethod
     def list_all(session: Session) -> list[Author]:
-        stmt = select(Author)
-        return session.execute(stmt).scalars().all()
+        return AuthorRepository.get_all(session)
 
 
     @staticmethod
     def update(session: Session, author_id: int, name: str) -> Author:
-        author = session.get(Author, author_id)
+        author = AuthorRepository.get_by_id(session, author_id)
         if not author:
             raise ValueError(f"Auteur introuvable : id={author_id}")
         author.name = name
@@ -37,7 +31,7 @@ class AuthorController:
 
     @staticmethod
     def delete(session: Session, author_id: int) -> None:
-        author = session.get(Author, author_id)
+        author = AuthorRepository.get_by_id(session, author_id)
         if not author:
             raise ValueError(f"Auteur introuvable : id={author_id}")
-        session.delete(author)
+        AuthorRepository.delete(session, author)
