@@ -4,3 +4,4 @@ python-dotenv
 alembic
 fastapi
 uvicorn
+email-validator

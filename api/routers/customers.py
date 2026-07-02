@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, EmailStr
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from database.db import SessionLocal
@@ -16,8 +16,8 @@ def get_db():
         db.close()
 
 class CustomerCreate(BaseModel):
-    name: str
-    email: str
+    name: str = Field(..., min_length=1)
+    email: EmailStr
 
 class CustomerUpdate(BaseModel):
     name: str | None = None
