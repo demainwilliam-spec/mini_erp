@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from fastapi import Depends
 from database.db import SessionLocal
@@ -16,15 +16,15 @@ def get_db():
         db.close()
 
 class BookCreate(BaseModel):
-    title: str
-    price: float
-    stock: int
+    title: str = Field(..., min_length=1)
+    price: float = Field(..., gt=0)
+    stock: int = Field(..., ge=0)
     author_id: int
     supplier_id: int
     category_ids: list[int] | None=None
 
 class BookUpdate(BaseModel):
-    price: float
+    price: float = Field(..., gt=0)
 
 @router.get("/")
 def list_books(db: Session = Depends(get_db)):
